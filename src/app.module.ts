@@ -11,7 +11,7 @@ import { CurrentUserMiddleware } from './users/utility/middlewares/current-user.
   providers: [],
 })
 export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer): void {
     consumer
       .apply(CurrentUserMiddleware)
       .forRoutes({path: '*' , method: RequestMethod.ALL});
