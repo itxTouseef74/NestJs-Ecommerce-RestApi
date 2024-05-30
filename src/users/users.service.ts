@@ -1,14 +1,20 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Body, Injectable, InternalServerErrorException, NotFoundException, Post  } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { UserSignup } from './dto/user-signup.dto';
-import { hash } from 'bcrypt';
+import { UserSignin } from './dto/user-signin.dto';
+import { hash , compare } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
+
+
 
 @Injectable()
 export class UsersService {
+
+  UserService: any;
 
   constructor(
     @InjectRepository(UserEntity)
@@ -31,16 +37,36 @@ export class UsersService {
     }
   }
 
+    
+ 
+  async signin(userSignin:UserSignin): Promise<UserEntity>{
+     
+    const userExists = await this.usersRepository.createQueryBuilder('users').addSelect('users.password').where('users.email=:email' , {email:userSignin.email}).getOne()
+    if (!userExists) throw new BadRequestException('Bad credentials! ');
+    const matchPassword= await compare(userSignin.password , userExists.password);
+    if(!matchPassword) throw new BadRequestException ('Bad Credentials!')
+    delete userExists.password
+    return userExists ; 
+  }
+
+
+
+
+
+
   create(createUserDto: CreateUserDto) {
     return 'This action adds a new user';
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return await this.usersRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.usersRepository.findOneBy({id})  ;
+    if(!user) throw new NotFoundException('user not found!');
+    return user;
+     
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
@@ -51,15 +77,14 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async findUserByEmail(email: string): Promise<UserEntity | undefined> {
-    console.log('Finding user by email'); 
-    try {
-      const user = await this.usersRepository.findOne({ where: { email } });
-      console.log('User found:', user); 
-      return user;
-    } catch (error) {
-      console.error('Error finding user by email:', error);
-      throw new InternalServerErrorException('An error occurred while finding the user by email');
-    }
+  async findUserByEmail(email:string):Promise<UserEntity>{
+    return await this.usersRepository.findOneBy({email})
+
   }
-}
+
+  async accessToken(user: UserEntity): Promise<string>{
+      return sign({id:user.id , email:user.email},process.env.ACCESS_TOKEN_SECRET_KEY , {expiresIn:process.env.ACCESS_TOKEN_EXPIRE_TIME})
+  }
+
+  }
+
