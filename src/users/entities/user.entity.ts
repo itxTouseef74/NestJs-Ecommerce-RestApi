@@ -3,6 +3,7 @@ import { Entity  , PrimaryGeneratedColumn ,  Column, Timestamp , CreateDateColum
 import { Roles } from "../utility/common/user-roles.enum";
 import { CategoryEntity } from "src/categories/entities/category.entity";
 import { ProductEntity } from "src/products/entities/product.entity";
+import { ReviewEntity } from "src/reviews/entities/review.entity";
 
 
 @Entity('users')
@@ -38,5 +39,9 @@ export class UserEntity {
 
     @OneToMany(()=>ProductEntity, (prod)=>prod.addedBy)
     products:ProductEntity
+    
+    @OneToMany(()=>ReviewEntity, (rev)=>rev.user)
+    reviews:ReviewEntity[];
+
 }
  
