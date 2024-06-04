@@ -17,6 +17,7 @@ export const dataSourceOptions: DataSourceOptions = {
 };
 
 const dataSource = new DataSource(dataSourceOptions);
+
 dataSource.initialize().then(() => {
     console.log('Database connection has been established successfully.');
 }).catch((error) => {

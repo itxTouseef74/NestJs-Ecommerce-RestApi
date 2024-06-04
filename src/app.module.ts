@@ -6,12 +6,14 @@ import { CurrentUserMiddleware } from './users/utility/middlewares/current-user.
 import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { OrdersModule } from './orders/orders.module';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule, CategoriesModule, ProductsModule, ReviewsModule],
+  imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule, CategoriesModule, ProductsModule, ReviewsModule, OrdersModule],
   controllers: [],
   providers: [],
+  
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer): void {
