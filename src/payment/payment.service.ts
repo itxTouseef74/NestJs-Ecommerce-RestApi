@@ -36,8 +36,8 @@ export class PaymentService {
         amount,
         currency,
         payment_method: paymentMethodId,
-        confirm: true, // Automatically confirm the payment intent
-        return_url: returnUrl, // Include the return URL
+        confirm: true, 
+        return_url: returnUrl, 
       });
 
       return paymentIntent;

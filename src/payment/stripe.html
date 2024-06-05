@@ -7,21 +7,21 @@
 <body>
   <form id="payment-form">
     <div id="card-element">
-      <!-- A Stripe Element will be inserted here. -->
+    
     </div>
     <button id="submit-button">Submit Payment</button>
   </form>
 
   <script>
-    // Initialize Stripe
-    const stripe = Stripe('pk_test_51OcpcVCwVss9H8ocia5OoPwKsPMOwByDPgjvLvbWO9aq1tIaLfsY9vgAXCq8eQAZML2RSKX1WiLt1ENvjnCz4o570048rusYgz');
+
+    const stripe = Stripe('your-public-key');
     const elements = stripe.elements();
     
-    // Create an instance of the card Element
+
     const card = elements.create('card');
     card.mount('#card-element');
 
-    // Handle form submission
+
     document.getElementById('payment-form').addEventListener('submit', async (event) => {
       event.preventDefault();
 
@@ -32,7 +32,7 @@
       } else {
         console.log('Token created:', token);
 
-        // Send the token to your backend
+        
         fetch('/api/payments/add-card', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

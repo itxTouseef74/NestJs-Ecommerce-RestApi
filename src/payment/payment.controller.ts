@@ -20,10 +20,10 @@ export class PaymentController {
   @Post('confirm-payment')
   async confirmPayment(@Body() body: { amount: number, currency: string, token: string, returnUrl: string }) {
     try {
-      // Create payment method using the token
+      
       const paymentMethodId = await this.paymentService.createCardPaymentMethod(body.token);
 
-      // Create and confirm payment intent using the payment method ID
+    
       const paymentIntent = await this.paymentService.createPaymentIntent(body.amount, body.currency, paymentMethodId, body.returnUrl);
 
       return {
