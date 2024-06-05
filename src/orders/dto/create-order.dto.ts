@@ -1,14 +1,25 @@
-import { Type } from "class-transformer";
-import { ValidateNested } from "class-validator";
-import { CreateShippingDto } from "./create-shipping.dto";
-import { OrderedProductsDto } from "./ordered-products.dto";
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateOrderDto {
-    @ValidateNested()
-    @Type(() => CreateShippingDto)
-    shippingAddress: CreateShippingDto;
+  @IsNotEmpty()
+  shippingAddress: any;
 
-    @ValidateNested({ each: true })
-    @Type(() => OrderedProductsDto)
-    orderedProducts: OrderedProductsDto[];
+  @IsNotEmpty()
+  orderedProducts: { id: number; product_quantity: number; product_unit_price: number }[];
+
+  @IsNumber()
+  @IsNotEmpty()
+  amount: number;
+
+  @IsString()
+  @IsNotEmpty()
+  currency: string ;
+
+  @IsString()
+  @IsNotEmpty()
+  paymentMethodId: string ;
+
+  @IsString()
+  @IsNotEmpty()
+  returnUrl: string ;
 }

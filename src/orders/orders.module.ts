@@ -6,13 +6,14 @@ import { OrderEntity } from './entities/order.entity';
 import { OrdersProductsEntity } from './entities/orders-products.entity';
 import { ShippingEntity } from './entities/shipping.entity';
 import { ProductsModule } from 'src/products/products.module';
-
+import { PaymentService } from 'src/payment/payment.service'; // Import PaymentService
 
 @Module({
-  imports: [TypeOrmModule.forFeature([OrderEntity , OrdersProductsEntity , ShippingEntity ]),ProductsModule],
+  imports: [
+    TypeOrmModule.forFeature([OrderEntity, OrdersProductsEntity, ShippingEntity]),
+    ProductsModule,
+  ],
   controllers: [OrdersController],
-  providers: [OrdersService],
-
+  providers: [OrdersService, PaymentService], 
 })
 export class OrdersModule {}
- 
