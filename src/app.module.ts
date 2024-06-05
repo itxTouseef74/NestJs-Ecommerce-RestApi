@@ -7,10 +7,12 @@ import { CategoriesModule } from './categories/categories.module';
 import { ProductsModule } from './products/products.module';
 import { ReviewsModule } from './reviews/reviews.module';
 import { OrdersModule } from './orders/orders.module';
+import { PaymentModule } from './payment/payment.module';
+import { ConfigModule } from '@nestjs/config';
 
 
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSourceOptions), UsersModule, CategoriesModule, ProductsModule, ReviewsModule, OrdersModule],
+  imports:[ConfigModule.forRoot({isGlobal:true}) ,TypeOrmModule.forRoot(dataSourceOptions), UsersModule, CategoriesModule, ProductsModule, ReviewsModule, OrdersModule , PaymentModule],
   controllers: [],
   providers: [],
   

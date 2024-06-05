@@ -4,47 +4,43 @@ import { UserEntity } from "src/users/entities/user.entity";
 import { ShippingEntity } from "./shipping.entity";
 import { OrdersProductsEntity } from "./orders-products.entity";
 
-
-
 @Entity({name:"orders"})
-
 export class OrderEntity {
 
-@PrimaryGeneratedColumn()
-id:number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-@CreateDateColumn()
-orderAt:Timestamp
+  @CreateDateColumn()
+  orderAt: Timestamp;
 
- @Column({type:"enum", enum: OrderStatus, default: OrderStatus.PROCESSING})
- status:string
+  @Column({type: "enum", enum: OrderStatus, default: OrderStatus.PROCESSING})
+  status: string;
 
+  @Column({nullable: true})
+  shippedAt: Date;
 
- @Column({nullable:true})
- shippedAt:Date
+  @Column({nullable: true})
+  deliveredAt: Date;
 
- @Column({nullable:true})
- deliveredAt:Date
-
-  @ManyToOne(()=> UserEntity, (user)=> user.ordersUpdateBy)
-  updatedBy:UserEntity
+  @ManyToOne(() => UserEntity, (user) => user.ordersUpdateBy)
+  updatedBy: UserEntity;
   
-  
-  @OneToOne(()=> ShippingEntity, (ship)=> ship.order, {cascade:true})
+  @OneToOne(() => ShippingEntity, (ship) => ship.order, {cascade: true})
   @JoinColumn()
-  shippingAddress:ShippingEntity
+  shippingAddress: ShippingEntity;
   
-   
-  @OneToMany(()=>OrdersProductsEntity, (op)=> op.order , {cascade:true})
-  products:OrdersProductsEntity[]
+  @OneToMany(() => OrdersProductsEntity, (op) => op.order, {cascade: true})
+  products: OrdersProductsEntity[];
 
+  @ManyToOne(() => UserEntity, (user) => user.orders)
+  user: UserEntity;
+  
+  @Column()
+  amount: number;
 
-  @ManyToOne(()=>UserEntity,(user)=> user.orders)
-  user:UserEntity
-  static user: UserEntity;
-  static shippingAddress: any;
-   
-  }
-  
-  
-  
+  @Column()
+  currency: string;
+
+  @Column({ nullable: true })
+  paymentIntentId: string;
+}
